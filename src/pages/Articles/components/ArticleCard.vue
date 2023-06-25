@@ -50,6 +50,13 @@ onMounted(() => {})
     height: 24px;
     margin-right: 8px;
   }
+
+  &-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 60%;
+  }
 }
 
 .card-description {
