@@ -9,21 +9,18 @@
       />
       <button class="header-search" @click="onSearch">搜索</button>
     </div>
-    <div v-if="isListLoading" class="loading">加载中...</div>
-    <div v-else-if="isListEmpty" class="empty">暂无数据</div>
-    <DynamicScroller v-else class="list" :items="articles" :min-item-size="240">
-      <template v-slot="{ item, index, active }">
-        <DynamicScrollerItem class="list-item" :item="item" :active="active">
-          <ArticleCard :article="item" @click="toDetail(item.id)">
-          </ArticleCard>
-        </DynamicScrollerItem>
+    <div v-if="isListEmpty" class="empty">暂无数据</div>
+    <VirtualScroller v-else class="list" :items="articles" :item-height="200">
+      <template v-slot="{ item }">
+        <ArticleCard :article="item" @click="toDetail(item.id)" style="margin: 8px">
+        </ArticleCard>
       </template>
-      <template #after>
+      <template #footer>
         <button v-if="isShowLoadMore" class="list-btn" @click="onLoadMore">
           下一页
         </button>
       </template>
-    </DynamicScroller>
+    </VirtualScroller>
   </div>
 </template>
 
@@ -35,8 +32,7 @@ import ArticleCard from './components/ArticleCard.vue'
 import type { Article } from '@/type'
 import { getArticles } from '@/api/api'
 import { debounce } from 'lodash-unified'
-import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
-import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+import VirtualScroller from '@/components/virtual-scroller/virtual-scroller.vue'
 
 const DEFAULT_PAGE_SIZE = 20
 
@@ -46,7 +42,6 @@ let articles = ref<Article[]>([])
 let selectedTag = ref<string[]>([])
 let rawSuggestion = ref<string[]>([])
 let isShowLoadMore = ref(false)
-let isListLoading = ref(false)
 let curPageNum = 1
 
 const isListEmpty = computed(() => {
@@ -125,6 +120,7 @@ async function onSearchInput(value: string) {
 async function onSearch() {
   curPageNum = 1
   const searchVal = selectedTag.value.join()
+  articles.value.length = 0
   articles.value = await _getArticles(curPageNum, DEFAULT_PAGE_SIZE, searchVal)
 }
 

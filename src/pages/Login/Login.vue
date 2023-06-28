@@ -8,12 +8,8 @@
       </div>
       <div class="header-login-btn">塾講師ログイン</div>
       <template class="header-action__mobile">
-        <el-icon v-if="isOpenDrawer" @click="() => (isOpenDrawer = false)">
-          <i-ep-close-bold />
-        </el-icon>
-        <el-icon v-else @click="() => (isOpenDrawer = true)">
-          <i-ep-fold />
-        </el-icon>
+        <Icon v-if="isOpenDrawer" name="close" @click="() => isOpenDrawer = false"/>
+        <Icon v-else name="fold" @click="() => isOpenDrawer = true"/>
       </template>
     </div>
     <Drawer class="drawer" v-if="isOpenDrawer && isMobile"></Drawer>
@@ -107,6 +103,7 @@ import ja from '@/assets/images/ja.png'
 import { useRouter } from 'vue-router'
 import Dropdown from '@/pages/Login/components/dropdown.vue'
 import Drawer from '@/pages/Login/components/drawer.vue'
+import Icon from '@/components/icon/icon.vue'
 
 const isPasswordShow = ref(false)
 const isOpenDrawer = ref(false)

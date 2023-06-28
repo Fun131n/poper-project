@@ -7,9 +7,7 @@
         @click="onMenuItemClick(index)"
       >
         <div>{{ menu.label }}</div>
-        <el-icon v-if="menu.value && menu.value.length > 0"
-          ><i-ep-arrow-right
-        /></el-icon>
+        <Icon v-if="menu.value && menu.value.length > 0" name="arrow_right"/>
       </div>
     </div>
     <template v-if="activeMenuIndex > -1">
@@ -24,10 +22,8 @@
           >
             <div>{{ subMenu.label }}</div>
             <template v-if="subMenu.value && subMenu.value.length > 0">
-              <el-icon v-if="activeSubMenuIndex === index"
-                ><i-ep-caret-bottom
-              /></el-icon>
-              <el-icon v-else><i-ep-caret-right /></el-icon>
+              <Icon v-if="activeSubMenuIndex === index" name="caret_bottom"/>
+              <Icon v-else name="caret_right"/>
             </template>
           </div>
           <div class="sub-menu-container" v-if="activeSubMenuIndex === index">
@@ -43,6 +39,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import Icon from '@/components/icon/icon.vue'
 
 const isOpenMenu = ref(false)
 const activeMenuIndex = ref(-1)
